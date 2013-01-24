@@ -1,19 +1,20 @@
+
 #include "mbed.h"
 #include "SDFileSystem.h"
- 
-SDFileSystem sd(p5, p6, p7, p8, "sd"); // the pinout on the mbed Cool Components workshop board
- 
-int main() {
-    printf("Hello World!\n");   
- 
-    mkdir("/sd/mydir", 0777);
-    
-    FILE *fp = fopen("/sd/mydir/sdtest.txt", "w");
-    if(fp == NULL) {
-        error("Could not open file for write\n");
-    }
-    fprintf(fp, "Hello fun SD Card World!");
-    fclose(fp); 
- 
-    printf("Goodbye World!\n");
+#include "wave_player.h"
+
+
+SDFileSystem sd(p5, p6, p7, p8, "sd"); //SD card
+
+AnalogOut DACout(p18);
+
+wave_player waver(&DACout);
+
+int main()
+{
+    FILE *wave_file;
+    printf("\n\n\nHello, wave world!\n");
+    wave_file=fopen("/sd/sample.wav","r");
+    waver.play(wave_file);
+    fclose(wave_file);
 }
