@@ -22,9 +22,10 @@ float Sine_Analog_out_data[128];
 float Square_Analog_out_data[128];
 float Saw_Analog_out_data[128];
 float Triangle_Analog_out_data[128];
+float saw_lead_bass[128];
 
 // Type of wave
-enum WaveType {SINE, SQUARE, SAWTOOTH, TRIANGLE};
+enum WaveType {SINE, SQUARE, SAWTOOTH, TRIANGLE, DUAL};
 volatile WaveType wave_type;
 
 // Note base frequencies, used for base pitch generation
@@ -55,6 +56,9 @@ void Sample_timer_interrupt(void)
         case TRIANGLE:
             PWM = Triangle_Analog_out_data[i];
             break;
+        case DUAL:
+            PWM = saw_lead_bass[i];
+            break;
     }
     // increment pointer (depending on octave) and wrap around back to 0 at 128
     i = (i+1*octave) & 0x7F;
@@ -76,9 +80,11 @@ int main()
         Saw_Analog_out_data[k] = k / 128.0f;
         // Triange - arcsine of the unscaled sine value
         Triangle_Analog_out_data[k] = asin((Sine_Analog_out_data[k]*2) - 1.0);
+
+        saw_lead_bass[k] = ((Square_Analog_out_data[k] + (k%32)/31.0))/2.0;
     }
     // Initialize wave type to default
-    wave_type = SINE;
+    wave_type = DUAL;
 
     // Enable sample interrupts - 110 Hz wave with 128 samples per cycle
     Sample_Period.attach(&Sample_timer_interrupt, 1.0/(110.0*128));
