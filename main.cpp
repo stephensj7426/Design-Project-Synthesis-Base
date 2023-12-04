@@ -1,6 +1,7 @@
 #include "mbed.h"
 #include "rtos.h"
 #include "uLCD_4DGL.h"
+#include "PinDetect.h"
 
 #define DEBUG 0
 
@@ -15,6 +16,8 @@ DigitalIn button(p25);
 AnalogIn pot(p20);
 uLCD_4DGL lcd(p28, p27, p30);
 DigitalOut LED(LED1);
+DigitalOut led2(LED2);
+PinDetect waveswitch(p19);
 
 Mutex lcd_mutex;
 
@@ -37,7 +40,7 @@ float saw_lead_bass[128];
 
 // Type of wave
 enum WaveType {W_SINE, W_SQUARE, W_SAWTOOTH, W_TRIANGLE, W_DUAL};
-volatile WaveType wave_type;
+volatile int wave_type;
 
 // Note base frequencies, used for base pitch generation
 const float base_freqs[] = {110.0f, 116.54f, 123.47f, 130.81f, 138.59f, 146.83f, 155.56f, 164.81f, 174.61f, 185.00f, 195.00f, 206.75f};
@@ -88,7 +91,7 @@ void create_sound(void const *argument) {
 		saw_lead_bass[k] = ((Square_Analog_out_data[k]/4.0 + (k%42)/41.0))/1.25;
 	}
 	// Initialize wave type to default
-	wave_type = W_SQUARE;
+	wave_type = W_SINE;
     octave_base = 2;
     octave = octave_base;
 
@@ -141,6 +144,10 @@ void display(void const *argument) {
 	}
 }
 
+void switch_wave() {
+    wave_type = (wave_type + 1) % 5;
+}
+
 int main()
 {
     lcd.baudrate(BAUD_1500000);
@@ -155,6 +162,10 @@ int main()
     PWM.period(1.0/200000.0);
     PWM = 0;
     button.mode(PullUp);
+
+    waveswitch.mode(PullUp);
+    waveswitch.attach_deasserted(&switch_wave);
+    waveswitch.setSampleFrequency();
 
 	Thread thread2(create_sound);
 	Thread thread3(display);
