@@ -2,6 +2,7 @@
 #include "rtos.h"
 #include "uLCD_4DGL.h"
 #include "PinDetect.h"
+#include <cstdlib>
 
 #define DEBUG 0
 
@@ -44,6 +45,14 @@ volatile int wave_type;
 
 // Note base frequencies, used for base pitch generation
 const float base_freqs[] = {110.0f, 116.54f, 123.47f, 130.81f, 138.59f, 146.83f, 155.56f, 164.81f, 174.61f, 185.00f, 195.00f, 206.75f};
+
+//Values needed for the wave type selection menu
+const int TOP_WAVE_COL = 8;
+volatile int prev_wave_col;
+volatile int wave_col;
+char curr_wave[10];
+char prev_wave[10];
+volatile bool wave_changed = false;
 
 // Interrupt routine
 // used to output next analog sample whenever a timer interrupt occurs
@@ -128,24 +137,66 @@ void create_sound(void const *argument) {
 void display(void const *argument) { 
 	while(1) {
 		lcd_mutex.lock();
+
 		lcd.color(RED);
         lcd.locate(0,3);
         float val = pot;
 		lcd.printf("Distance: %.2f", val * 500);
+
         lcd.locate(0, 4);
         lcd.printf("Freq: %.2f", current_frequency);
-		if (octave == 1) {
-			lcd.color(BLUE);
-			lcd.locate(2,2);
-			lcd.printf("Octave");
-		}
+
+		lcd.locate(0,5);
+		lcd.printf("Octave: %d", octave);
+
+        if (wave_changed) {
+            lcd.color(BLUE);
+            lcd.locate(0, TOP_WAVE_COL - 1);
+            lcd.printf("WAVE TYPE:");
+
+            lcd.color(GREEN);
+            lcd.locate(0, wave_col);
+            lcd.printf(curr_wave);
+
+            lcd.color(RED);
+            lcd.locate(0, prev_wave_col);
+            lcd.printf(prev_wave);
+
+            wave_changed = false;
+        }
+
 		lcd_mutex.unlock();
 		Thread::wait(500.0);
 	}
 }
 
 void switch_wave() {
+    prev_wave_col = wave_type + TOP_WAVE_COL;
     wave_type = (wave_type + 1) % 5;
+    wave_col = wave_type + TOP_WAVE_COL;
+    switch (wave_type) {
+        case W_SINE:
+            strcpy(curr_wave, "SINE");
+            strcpy(prev_wave, "DUAL");
+            break;
+        case W_SQUARE:
+            strcpy(curr_wave, "SQUARE");
+            strcpy(prev_wave, "SINE");
+            break;
+        case W_SAWTOOTH:
+            strcpy(curr_wave, "SAWTOOTH");
+            strcpy(prev_wave, "SQUARE");
+            break;
+        case W_TRIANGLE:
+            strcpy(curr_wave, "TRIANGLE");
+            strcpy(prev_wave, "SAWTOOTH");
+            break;
+        case W_DUAL:
+            strcpy(curr_wave, "DUAL");
+            strcpy(prev_wave, "TRIANGLE");
+            break;
+    }
+    wave_changed = true;
 }
 
 int main()
@@ -169,6 +220,15 @@ int main()
 
 	Thread thread2(create_sound);
 	Thread thread3(display);
+
+    //Jank way to initialize the wave type text
+    for (int i = 0; i < 6; i++) {
+        switch_wave();
+        while (wave_changed) {
+            Thread::wait(100.0);
+        }
+    }
+
     // Main loop
     while(1) {
         LED = !LED;
