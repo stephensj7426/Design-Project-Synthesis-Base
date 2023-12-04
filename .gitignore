@@ -1,0 +1,10 @@
+BUILD
+?mbed
+compile_commands?json
+?clangd
+?cache
+SDFileSystem
+mbed-rtos
+wave_player
+mbed
+4DGL-uLCD-SE
