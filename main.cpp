@@ -44,10 +44,10 @@ const float base_freqs[] = {110.0f, 116.54f, 123.47f, 130.81f, 138.59f, 146.83f,
 // used to output next analog sample whenever a timer interrupt occurs
 void Sample_timer_interrupt(void)
 {
-    if (button) {
-        PWM = 0;
-        return;
-    }
+    //if (button) {
+    //    PWM = 0;
+    //    return;
+    //}
     // send next analog sample out to D to A, based on type of wave
     switch (wave_type)
     {
