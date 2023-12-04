@@ -26,6 +26,8 @@ volatile int i = 0;
 volatile int octave = 1; // Octave select, must be power of 2 & > 0
 volatile int octave_base = 1;
 
+volatile float current_frequency;
+
 // Pre-computed wave output arrays
 float Sine_Analog_out_data[128];
 float Square_Analog_out_data[128];
@@ -111,8 +113,10 @@ void create_sound(void const *argument) {
             }
             // Detatch the old sample interrupts
             Sample_Period.detach();
+            //Calculate new frequency
+            current_frequency = base_freqs[new_val % 12];
             // Start new interrupt with new base frequency
-            Sample_Period.attach(&Sample_timer_interrupt, 1.0/(base_freqs[new_val % 12]*128));
+            Sample_Period.attach(&Sample_timer_interrupt, 1.0/(current_frequency * 128));
         }
 		Thread::wait(50.0);
 	}
@@ -122,16 +126,18 @@ void display(void const *argument) {
 	while(1) {
 		lcd_mutex.lock();
 		lcd.color(RED);
-        lcd.locate(2,1);
+        lcd.locate(0,3);
         float val = pot;
-		lcd.printf("Notes: %.2f", val);
+		lcd.printf("Distance: %.2f", val * 500);
+        lcd.locate(0, 4);
+        lcd.printf("Freq: %.2f", current_frequency);
 		if (octave == 1) {
 			lcd.color(BLUE);
 			lcd.locate(2,2);
 			lcd.printf("Octave");
 		}
 		lcd_mutex.unlock();
-		Thread::wait(1000.0);
+		Thread::wait(500.0);
 	}
 }
 
@@ -140,7 +146,9 @@ int main()
     lcd.baudrate(BAUD_1500000);
 	lcd.text_height(2);
     lcd.text_width(2);
-    lcd.printf("SYNTH");
+    lcd.printf("MBEDolin");
+    lcd.text_height(1);
+    lcd.text_width(1);
     LED = 0;
     printf("INIT\n");
     // Init PWM period, button mode, and Ticker for interrupts
