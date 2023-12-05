@@ -73,13 +73,13 @@ Next, we needed a way to attach the softpot in a manner that would allow us to c
 
     Example code here
 
-### RTOS Threading
+## RTOS Threading
 The main program plays the audio and places its wave information on the LCD, through the use of separate RTOS threads. This helps the mbed stay responsive during the multiple tasks it needs to perform concurrently. The two threads are called create_sound() and display(). The system waits 0.5 seconds to check between the two threads.
 
-## create_sound()
+### create_sound()
 This thread is responsible for making the notes that are selected by the user. During the precomputation stage, 128 sample points from the four wave types are calculated. After a wave type is selected, the samples are attached to a 110 HZ wave through an interrupt. In the while loop, the note is selected from the input from the softpot. This note is then bitshifted for different octaves. Once the desired note is chosen and formed, the sample interrupt is detached while a new interrupt is started with a new base frequency attached to it. This thread is chekced every 50 ms.
 
-## display()
+### display()
 This thread is responsible for updating the LCD display based on the current synthesis settings. The LCD prints out the distance, frequency, octave, and current note (largest font) all in red. Towards the bottom of the screen, the LCD lists each wave name in red, with the exception of the current wave which is displayed in green. This thread is checked every 0.5 seconds.
 
 ## Media
