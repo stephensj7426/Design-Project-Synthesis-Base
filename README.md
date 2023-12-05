@@ -4,7 +4,7 @@ Created by Andrew Nazareth, Joshua Stephens, and Barry Walker
 ## Table of Contents
 * [The Idea](#the-idea)
 * [Hardware Setup](#hardware-setup)
-* [Code](#Code)
+* [Code](#code)
 * [Media](#media)
 
 ## The Idea
@@ -30,8 +30,6 @@ For the base electrical hardware of the MBEDolin, the following components are r
 * Several Pushbuttons
 * A 10k Ohm Resistor
 
-We want our implementation to be played similarly to Wintergatan's modulin, so we added a small breadboard and some custom 3D printed structural pieces.
-
 ### Wiring
 
 | MBED Pin | External 5V | SoftPot | 10k Ohm Resistor | D Class Amplifier | Speaker | uLCD Display | Pushbuttons |
@@ -51,6 +49,18 @@ We want our implementation to be played similarly to Wintergatan's modulin, so w
 | p30      |             |         |                  |                   |         | RESET        |             |
 
 When the SoftPot is not being pressed, the output is floating. Therefore, a 10k Ohm resistor is required to pull down the output to keep it defined.
+
+### Extra Pieces
+
+One goal of our implementation was to have it be played similarly to Wintergatan's modulin, so we added a small breadboard as well as some custom 3D printed and laser cut structural pieces.
+
+We laser cut a piece from a sheet of acrylic to serve as the backing for the SoftPot. This backing allows us secure and press down on the SoftPot when not on a flat surface. The SoftPot came with 3M adhesive on the back, and we used that to stick it to the acrylic.
+
+    Show image here?
+
+Next, we needed a way to attach the softpot in a manner that would allow us to carry it and the other pieces of our embedded system as one unit. Using a large black breadboard with terminal connectors as the reference, we designed a 3D printed part that could be screwed onto the breadboard to hold out the SoftPot. This part also holds the small breadboard vertically so the SoftPot can be plugged in without bending the connector. From there, the large breadboard can be held on the users shoulder and they can play the instrument similar to the Modulin.
+
+    Another image here
 
 ## Code
 
