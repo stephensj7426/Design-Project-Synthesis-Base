@@ -48,6 +48,8 @@ For the base electrical hardware of the MBEDolin, the following components are r
 | p28      |             |         |                  |                   |         | RX           |             |
 | p30      |             |         |                  |                   |         | RESET        |             |
 
+![SoftPot Front](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Screenshot%202023-12-06%20163420.png)
+
 When the SoftPot is not being pressed, the output is floating. Therefore, a 10k Ohm resistor is required to pull down the output to keep it defined.
 
 ### Extra Pieces
