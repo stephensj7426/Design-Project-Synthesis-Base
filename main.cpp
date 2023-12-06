@@ -171,6 +171,11 @@ void create_sound(void const *argument) {
             default:
                 octave_base = offset;
         }
+        // Free up CPU if we're not playing
+        if (octave_base == 0) {
+            Sample_Period.detach();
+            Thread::yield();
+        }
         // If the note has changed (reduces stopping/starting of interrupts)
         if (old_note_val != new_val || old_octave_base != octave_base) {
             old_octave_base = octave_base;
@@ -181,8 +186,6 @@ void create_sound(void const *argument) {
             } else {
                 octave = octave_base;
             }
-            // Detatch the old sample interrupts
-            Sample_Period.detach();
             //Calculate new frequency
             current_frequency = base_freqs[new_val % 12];
             // Start new interrupt with new base frequency
