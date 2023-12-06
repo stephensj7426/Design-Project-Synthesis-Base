@@ -97,4 +97,5 @@ This thread is responsible for updating the LCD display based on the current syn
 
 ## Media
 ### Mbedolin Introduction
-![Alt text](https://img.youtube.com/vi/rsC2MYIwLAU/0.jpg)
+[![Video Title](https://img.youtube.com/vi/rsC2MYIwLAU/0.jpg)](https://www.youtube.com/watch?v=rsC2MYIwLAU)
+
