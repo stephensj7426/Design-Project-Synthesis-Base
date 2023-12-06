@@ -246,7 +246,7 @@ void display(void const *argument) {
         }
 
         // Delay
-		Thread::wait(500.0);
+		Thread::wait(200.0);
 	}
 }
 
