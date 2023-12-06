@@ -71,7 +71,19 @@ Next, we needed a way to attach the softpot in a manner that would allow us to c
 
 ### Synthesizer Overview
 
-    Example code here
+#### Initial Design
+The initial design for the MBEDolin relied on direct digital synthesis (DDS), sending a sample of a waveform for some set sample frequency, scaled as a 0.0 - 1.0 AnalogOut signal. After several iterations of this design, we encountered tradeoffs, which were ultimately drawbacks that we couldn't ignore. Using the DDS approach requires set sample frequency; we wanted to produce a wide range of specific musical notes, so this sample frequency needed to be fairly high. The sample frequency placed an upper bound on the frequency that we could produce. In the best case, this high interrupt frequency slowed the mbed, and prevented it from working in the worst case. If the sample frequency was lowered, the range and sound quality were reduced. 
+
+Additionally, the DDS approach requires large steps through the sample waveform to accurately produce the necessary frequencies. This introduced problems with the quality of the output sound, such as whine and hissing. This could be remidied by increasing the quality of the sampled waveform through adding more samples. However, this required consuming more memory or introducing additional instructions in the samping interrupt service routine, which is problematic at high sample frequencies.
+
+These tradeoffs ultimately guided us to a design that allowed us to maximize the quality of our output sounds, have a fast and responsive system, and produce other outputs concurrently.
+
+#### Current Design
+The current design for the MBEDolin uses a modified DDS, sending a sample of a waveform to an output pin; however, rather than using an AnalogOut, we use a PwmOut. We also vary the sample frequency for a set of 12 chromatic base pitches, and step twice as fast through the sample for each subsequent musical octave. 
+
+The synthesis is handled by the create_sound() thread; first, several waveforms are generated in the mbed's RAM, so that the interrupt routine will have rapid access to the necessary sample values. These values correspond to the types of waves produced by the MBEDolin: sine, square, sawtooth, triangle, and a polyphonic square bass + sawtooth lead. Next, input values from the buttons and smooth potentiometer are read to calibrate the output sound. The smooth pot determines the pitch of the wave, while the octave buttons determine in which base octave this pitch will be produced. The current waveform is selected by the user in a menu on the uLCD, with the default being sine.
+
+A Ticker, Sample_Period, is used to send sample frequencies to the PwmOut, PWM, at a rate of (1/(base_frequency * 128 samples)) seconds. Since our base frequencies vary from 110.0 Hz to 206.75 Hz, the sample interrupts occur from 0.07ms to 0.04ms, which is fairly rapid, but does not slow the operation of the mbed. The samples are selected from the appropriate sample array based on the currently selected wave type, and then sent to the PwmOut. The sample index is incremented based on the octave. The octave is also used to control whether the sound playing or not. If the octave is zero, no sound plays. On the transition to zero octave, the sound output decays rather than immediately jumping to zero, to smooth the sound stopping.
 
 ## RTOS Threading
 The main program plays the audio and places its wave information on the LCD, through the use of separate RTOS threads. This helps the mbed stay responsive during the multiple tasks it needs to perform concurrently. The two threads are called create_sound() and display(). The system waits 0.5 seconds to check between the two threads.
