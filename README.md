@@ -100,6 +100,7 @@ This thread is responsible for updating the LCD display based on the current syn
 [![Video](https://img.youtube.com/vi/rsC2MYIwLAU/0.jpg)](https://www.youtube.com/watch?v=rsC2MYIwLAU)
 
 ### Images
-![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/3D_Printed_Holder2.jpg)
 ![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Display%20Unzoomed.jpg)
 ![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Top%20Down%201.jpg)
+![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/3D_Printed_Holder2.jpg)
+
