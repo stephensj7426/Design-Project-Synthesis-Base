@@ -102,5 +102,5 @@ This thread is responsible for updating the LCD display based on the current syn
 ### Images
 ![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Display%20Unzoomed.jpg)
 ![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Top%20Down%201.jpg)
-![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/3D_Printed_Holder2.jpg)
+![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Barry%20Holding%20MBEDolin.jpg)
 
