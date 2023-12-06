@@ -12,7 +12,6 @@
 
 // Init I/O Pins
 PwmOut PWM(p21);
-DigitalIn button(p25);
 AnalogIn pot(p20);
 uLCD_4DGL lcd(p28, p27, p30);
 DigitalOut LED(LED1);
@@ -274,7 +273,6 @@ int main()
     // Init PWM period, button mode, and Ticker for interrupts
     PWM.period(1.0/200000.0);
     PWM = 0;
-    button.mode(PullUp);
 
     // Init wave switch button
     waveswitch.mode(PullUp);
