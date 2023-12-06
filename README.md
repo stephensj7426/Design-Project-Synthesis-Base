@@ -96,3 +96,5 @@ This thread is responsible for making the notes that are played by the user. Dur
 This thread is responsible for updating the LCD display based on the current synthesis settings. The LCD prints out the pressed distance, frequency, octave, and current note (largest font) all in red. Towards the bottom of the screen, the LCD lists each wave name in red, with the exception of the current wave which is displayed in green. This thread is ran every 0.5 seconds.
 
 ## Media
+### Mbedolin Introduction
+![Alt text](https://img.youtube.com/vi/rsC2MYIwLAU/0.jpg)](https://www.youtube.com/watch?v=rsC2MYIwLAU)
