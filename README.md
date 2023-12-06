@@ -1,4 +1,4 @@
-# MBEDolin - 4180 Final Design Project
+# MBEDolin - ECE 4180 Final Design Project
 Created by Andrew Nazareth, Joshua Stephens, and Barry Walker
 
 ## Table of Contents
@@ -106,16 +106,20 @@ This thread is responsible for updating the LCD display based on the current syn
 
 MBEDolin display in action
 
+
+
 ![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Top%20Down%201.jpg)
 
 Top-Down View of the MBEDolin
+
+
 
 ![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Barry%20Holding%20MBEDolin.jpg)
 
 Example of holding the MBEDolin like a violin
 
+
+
 ![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Josh%20Holding.jpg)
 
 Example of holding the MBEDolin like a guitar
-
-
