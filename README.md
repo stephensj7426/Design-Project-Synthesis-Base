@@ -103,4 +103,6 @@ This thread is responsible for updating the LCD display based on the current syn
 ![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Display%20Unzoomed.jpg)
 ![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Top%20Down%201.jpg)
 ![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Barry%20Holding%20MBEDolin.jpg)
+![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Josh%20Holding.jpg)
+
 
