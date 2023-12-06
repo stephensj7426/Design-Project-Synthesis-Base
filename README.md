@@ -101,8 +101,15 @@ This thread is responsible for updating the LCD display based on the current syn
 
 ### Images
 ![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Display%20Unzoomed.jpg)
+MBEDolin display in action
+
 ![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Top%20Down%201.jpg)
+Top-Down View of the MBEDolin
+
 ![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Barry%20Holding%20MBEDolin.jpg)
+Example of holding the MBEDolin like a violin
+
 ![Image](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/Josh%20Holding.jpg)
+Example of holding the MBEDolin like a guitar
 
 
