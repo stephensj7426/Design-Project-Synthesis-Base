@@ -4,7 +4,7 @@ Created by Andrew Nazareth, Joshua Stephens, and Barry Walker
 ## Table of Contents
 * [The Idea](#the-idea)
 * [Hardware Setup](#hardware-setup)
-* [Code](#code)
+* [Code](#Code)
 * [Media](#media)
 
 ## The Idea
@@ -12,7 +12,7 @@ The MBEDolin is a digital synthesizer instrument that is played in a similar fas
 
 Our team was interested in creating a synthesizer for this project, but we needed to find a way to incorporate the embedded systems elements that we have learned throughout the semester.
 
-The inspiration for this project was this [YouTube Video](https://www.youtube.com/watch?v=MUdWeBYe3GY) by Wintergatan, in which he creates the "Modulin". His system utilizes a similar potentiometer strip. However, it also uses advanced sythesizer equipment. We hope to create a device with similar functionality that uses the MBED RTOS as its core.
+The inspiration for this project was this [YouTube Video](https://www.youtube.com/watch?v=MUdWeBYe3GY) by Wintergatan, in which he explains how he created the "Modulin". His system utilizes a similar potentiometer strip. However, it also uses advanced synthesizer equipment. We hope to create a device with similar functionality that uses the MBED RTOS as its core.
 
 Besides being driven by the MBED, another way in which our device differs is that it contains an LCD screen to view the characteristics of the sound, such as the note and frequency. The screen is also used to view the current settings, such as the wave type and the current octave of the instrument.
 
@@ -56,7 +56,8 @@ One goal of our implementation was to have it be played similarly to Wintergatan
 
 We laser cut a piece from a sheet of acrylic to serve as the backing for the SoftPot. This backing allows us secure and press down on the SoftPot when not on a flat surface. The SoftPot came with 3M adhesive on the back, and we used that to stick it to the acrylic.
 
-    Show image here?
+![SoftPot Front](Media/Pictures/SoftPot_Front.jpg)
+![SoftPot Back](Media/Pictures/SoftPot_Back.jpg)
 
 Next, we needed a way to attach the softpot in a manner that would allow us to carry it and the other pieces of our embedded system as one unit. Using a large black breadboard with terminal connectors as the reference, we designed a 3D printed part that could be screwed onto the breadboard to hold out the SoftPot. This part also holds the small breadboard vertically so the SoftPot can be plugged in without bending the connector. From there, the large breadboard can be held on the users shoulder and they can play the instrument similar to the Modulin.
 
@@ -88,10 +89,10 @@ A Ticker, Sample_Period, is used to send sample frequencies to the PwmOut, PWM, 
 ### RTOS Threading
 The main program plays the audio and places its wave information on the LCD, through the use of separate RTOS threads. This helps the mbed stay responsive during the multiple tasks it needs to perform concurrently. The two threads are called create_sound() and display(). The system waits 0.5 seconds to check between the two threads.
 
-#### create_sound()
-This thread is responsible for making the notes that are selected by the user. During the precomputation stage, 128 sample points from the four wave types are calculated. After a wave type is selected, the samples are attached to a 110 HZ wave through an interrupt. In the while loop, the note is selected from the input from the softpot. This note is then bitshifted for different octaves. Once the desired note is chosen and formed, the sample interrupt is detached while a new interrupt is started with a new base frequency attached to it. This thread is chekced every 50 ms.
+#### *create_sound*
+This thread is responsible for making the notes that are played by the user. During the precomputation stage, 128 sample points from the four wave types are calculated to created the lookup tables. In the while loop, the note is determined using the input from the SoftPot. This note is then bitshifted for different octaves. With the note frequency, the thread attached a function that iterates through the lookup tables is attached the Ticker, Sample_Period, at the desired frequency. This thread is ran every 50 ms.
 
-#### display()
-This thread is responsible for updating the LCD display based on the current synthesis settings. The LCD prints out the distance, frequency, octave, and current note (largest font) all in red. Towards the bottom of the screen, the LCD lists each wave name in red, with the exception of the current wave which is displayed in green. This thread is checked every 0.5 seconds.
+#### *display*
+This thread is responsible for updating the LCD display based on the current synthesis settings. The LCD prints out the pressed distance, frequency, octave, and current note (largest font) all in red. Towards the bottom of the screen, the LCD lists each wave name in red, with the exception of the current wave which is displayed in green. This thread is ran every 0.5 seconds.
 
 ## Media
