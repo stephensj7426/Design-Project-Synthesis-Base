@@ -52,10 +52,8 @@ const char* notes[] = {"A ", "A#", "B ", "C ", "C#", "D ", "D#", "E ", "F ", "F#
 
 //Values needed for the wave type selection menu
 const int TOP_WAVE_COL = 8;
-volatile int prev_wave_col;
-volatile int wave_col;
-char curr_wave[10];
-char prev_wave[10];
+const char* wave_strings[] = {"SINE", "SQUARE", "SAWTOOTH", "TRIANGLE", "DUAL"};
+volatile int prev_wave;
 volatile bool wave_changed = false;
 
 // Utility function; Simple log_2 algorithm
@@ -228,12 +226,12 @@ void display(void const *argument) {
             lcd.printf("WAVE TYPE:");
 
             lcd.color(GREEN);
-            lcd.locate(0, wave_col);
-            lcd.printf(curr_wave);
+            lcd.locate(0, wave_type + TOP_WAVE_COL);
+            lcd.printf(wave_strings[wave_type]);
 
             lcd.color(RED);
-            lcd.locate(0, prev_wave_col);
-            lcd.printf(prev_wave);
+            lcd.locate(0, prev_wave + TOP_WAVE_COL);
+            lcd.printf(wave_strings[prev_wave]);
 
             wave_changed = false;
         }
@@ -245,31 +243,8 @@ void display(void const *argument) {
 
 // Thread to cycle through currently selected wave in enum
 void switch_wave() {
-    prev_wave_col = wave_type + TOP_WAVE_COL;
+    prev_wave = wave_type;
     wave_type = (wave_type + 1) % 5;
-    wave_col = wave_type + TOP_WAVE_COL;
-    switch (wave_type) {
-        case W_SINE:
-            strcpy(curr_wave, "SINE");
-            strcpy(prev_wave, "DUAL");
-            break;
-        case W_SQUARE:
-            strcpy(curr_wave, "SQUARE");
-            strcpy(prev_wave, "SINE");
-            break;
-        case W_SAWTOOTH:
-            strcpy(curr_wave, "SAWTOOTH");
-            strcpy(prev_wave, "SQUARE");
-            break;
-        case W_TRIANGLE:
-            strcpy(curr_wave, "TRIANGLE");
-            strcpy(prev_wave, "SAWTOOTH");
-            break;
-        case W_DUAL:
-            strcpy(curr_wave, "DUAL");
-            strcpy(prev_wave, "TRIANGLE");
-            break;
-    }
     wave_changed = true;
 }
 
