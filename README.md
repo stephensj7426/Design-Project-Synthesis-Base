@@ -56,12 +56,12 @@ One goal of our implementation was to have it be played similarly to Wintergatan
 
 We laser cut a piece from a sheet of acrylic to serve as the backing for the SoftPot. This backing allows us secure and press down on the SoftPot when not on a flat surface. The SoftPot came with 3M adhesive on the back, and we used that to stick it to the acrylic.
 
-![SoftPot Front](Media/Pictures/SoftPot_Front.jpg)
-![SoftPot Back](Media/Pictures/SoftPot_Back.jpg)
+![SoftPot Front](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/SoftPot_Front.jpg)
+![SoftPot Back](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/SoftPot_Back.jpg)
 
 Next, we needed a way to attach the softpot in a manner that would allow us to carry it and the other pieces of our embedded system as one unit. Using a large black breadboard with terminal connectors as the reference, we designed a 3D printed part that could be screwed onto the breadboard to hold out the SoftPot. This part also holds the small breadboard vertically so the SoftPot can be plugged in without bending the connector. From there, the large breadboard can be held on the users shoulder and they can play the instrument similar to the Modulin.
 
-    Another image here
+![3D Print](https://github.com/stephensj7426/Design-Project-Synthesis-Base/blob/main/docs/3D_Printed_Holder.jpg)
 
 ## Code
 
