@@ -4,8 +4,6 @@
 #include "PinDetect.h"
 #include <cstdlib>
 
-#define DEBUG 0
-
 // Uses Class D Audio Amp to produce output waves of varying types
 
 // Reads 500 mm smooth pot to determine chromatic note; 2 octaves on pot
