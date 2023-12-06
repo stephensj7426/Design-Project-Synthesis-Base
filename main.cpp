@@ -47,7 +47,7 @@ volatile float pwm_decay;
 
 // Note base frequencies and names, used for base pitch generation
 const float base_freqs[] = {110.0f, 116.54f, 123.47f, 130.81f, 138.59f, 146.83f, 155.56f, 164.81f, 174.61f, 185.00f, 195.00f, 206.75f};
-const char* notes[] = {"A ", "A#", "B ", "C ", "C#", "D ", "D#", "E ", "F ", "F#", "G ", "G#"};
+const char* notes[] = {"A ", "Bb", "B ", "C ", "Db", "D ", "Eb", "E ", "F ", "Gb", "G ", "Ab"};
 
 //Values needed for the wave type selection menu
 const int TOP_WAVE_COL = 8;
@@ -138,7 +138,7 @@ void create_sound(void const *argument) {
 		// Sine & scale
 		Sine_Analog_out_data[k]=((1.0 + sin((float(k)/128.0*6.28318530717959)))/2.0);
 		// Square, based on sine value 
-		Square_Analog_out_data[k] = Sine_Analog_out_data[k] > 0.5 ? 1.0 : 0.0;
+		Square_Analog_out_data[k] = Sine_Analog_out_data[k] > 0.5 ? 0.75 : 0.0;
 		// Sawtooth, based on index in array
 		Saw_Analog_out_data[k] = k / 128.0f;
 		// Triange - arcsine of the unscaled sine value
@@ -159,20 +159,31 @@ void create_sound(void const *argument) {
     int old_octave_base = 1;
 	while (1) {
         // Calculate tne new note index - one of 24 chromatic pitches
-        int new_val = (int) (pot * 24);
+        int new_val = (int) (pot * 25);
         // Read offset and set octave base accordingly
         switch (offset) {
-            case 3:
+            case 0:
+                octave_base = 1;
+                break;
+            case 1:
+                octave_base = 2;
+                break;
+            case 2:
                 octave_base = 8;
                 break;
-            default:
-                octave_base = offset;
+            case 3:
+                octave_base = 16;
+                break;
         }
         // Free up CPU if we're not playing
-        if (octave_base == 0) {
+        if (octave_base == 0 || new_val == 0) {
+            old_note_val = -1;
             Sample_Period.detach();
             Thread::yield();
+            Thread::wait(50);
+            continue;
         }
+        new_val--;
         // If the note has changed (reduces stopping/starting of interrupts)
         if (old_note_val != new_val || old_octave_base != octave_base) {
             old_octave_base = octave_base;
@@ -214,7 +225,8 @@ void display(void const *argument) {
         lcd.locate(9, 10);
         lcd.text_height(5);
         lcd.text_width(5);
-        lcd.printf("%s", notes[((int) (pot * 24)) % 12]);
+        int note_idx = (int) (pot * 25) == 0 ? -1 : (((int) (pot * 25)) - 1) % 12;
+        lcd.printf("%s", note_idx == -1 ? "  " : notes[note_idx]);
         lcd.text_height(1);
         lcd.text_width(1);
 
