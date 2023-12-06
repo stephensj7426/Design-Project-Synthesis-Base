@@ -85,13 +85,13 @@ The synthesis is handled by the create_sound() thread; first, several waveforms 
 
 A Ticker, Sample_Period, is used to send sample frequencies to the PwmOut, PWM, at a rate of (1/(base_frequency * 128 samples)) seconds. Since our base frequencies vary from 110.0 Hz to 206.75 Hz, the sample interrupts occur from 0.07ms to 0.04ms, which is fairly rapid, but does not slow the operation of the mbed. The samples are selected from the appropriate sample array based on the currently selected wave type, and then sent to the PwmOut. The sample index is incremented based on the octave. The octave is also used to control whether the sound playing or not. If the octave is zero, no sound plays. On the transition to zero octave, the sound output decays rather than immediately jumping to zero, to smooth the sound stopping.
 
-## RTOS Threading
+### RTOS Threading
 The main program plays the audio and places its wave information on the LCD, through the use of separate RTOS threads. This helps the mbed stay responsive during the multiple tasks it needs to perform concurrently. The two threads are called create_sound() and display(). The system waits 0.5 seconds to check between the two threads.
 
-### create_sound()
+#### create_sound()
 This thread is responsible for making the notes that are selected by the user. During the precomputation stage, 128 sample points from the four wave types are calculated. After a wave type is selected, the samples are attached to a 110 HZ wave through an interrupt. In the while loop, the note is selected from the input from the softpot. This note is then bitshifted for different octaves. Once the desired note is chosen and formed, the sample interrupt is detached while a new interrupt is started with a new base frequency attached to it. This thread is chekced every 50 ms.
 
-### display()
+#### display()
 This thread is responsible for updating the LCD display based on the current synthesis settings. The LCD prints out the distance, frequency, octave, and current note (largest font) all in red. Towards the bottom of the screen, the LCD lists each wave name in red, with the exception of the current wave which is displayed in green. This thread is checked every 0.5 seconds.
 
 ## Media
